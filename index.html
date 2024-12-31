@@ -1,7 +1,3 @@
-@{
-    ViewBag.Title = "Task Counter";
-}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +29,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative; /* Needed for absolute positioning of the clear button */
         }
 
         h1 {
@@ -101,6 +98,9 @@
                 }
 
         .clear-section {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             text-align: center;
         }
 
@@ -124,11 +124,10 @@
 <body>
     <div class="container">
         <h1>Year 2025</h1>
-        <h4>@DateTime.Now.ToString("F")</h4>
-        <div id="tasks"></div>
         <div class="clear-section">
-            <button onclick="clearStorage()">Clear Storage</button>
+            <button onclick="clearStorage()">Clear</button>
         </div>
+        <div id="tasks"></div>
     </div>
 
     <script>
