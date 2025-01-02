@@ -342,7 +342,7 @@
                 commentItem.innerHTML = `
                     <strong>${comment.text}</strong>
                     <span>${comment.date}</span>
-                    <button onclick="removeComment(${index})" class="remove-comment-btn">x</button>
+                    <button ondblclick="removeComment(${index})" class="remove-comment-btn">x</button>
                 `;
 
                 // Add a click event to fill the input with the clicked comment's text
