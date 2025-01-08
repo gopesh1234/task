@@ -66,12 +66,12 @@
                 background: #145cb8;
             }
 
-        #tasks-container, #comments-container, #pending-container {
+        #tasks-container, #comments-container, #pending-container, #abc-container {
             display: none;
             flex-direction: column;
         }
 
-            #tasks-container.active, #comments-container.active, #pending-container.active {
+            #tasks-container.active, #comments-container.active, #pending-container.active, #abc-container.active {
                 display: flex;
             }
 
@@ -375,7 +375,7 @@
 
         <div id="abc-container">
             <div class="abc-header">
-                <p>Remaining Amount: <span id="abc-remaining">426370</span></p>
+                <p>Remaining: <span id="abc-remaining">426370</span></p>
             </div>
             <div class="abc-buttons">
                 <button onclick="deductABC(10)">10</button>
