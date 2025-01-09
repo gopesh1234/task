@@ -678,7 +678,7 @@
 
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('#tasks-container, #comments-container, #pending-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#tasks-container, #comments-container, #pending-container, #abc-container').forEach(el => el.classList.remove('active'));
 
             if (tab === 'tasks') {
                 document.getElementById('tasks-container').classList.add('active');
@@ -694,7 +694,6 @@
             } else if (tab === 'money') {
                 document.getElementById('abc-container').classList.add('active');
                 document.querySelector('.tab:nth-child(4)').classList.add('active');
-                loadPending();
             }
         }
 
