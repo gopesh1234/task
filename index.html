@@ -337,6 +337,55 @@
                 background: rgba(255, 255, 255, 0.4);
             }
 
+        /* Hide the default checkbox */
+        .custom-toggle input[type="checkbox"] {
+            display: none;
+        }
+
+        /* The label acts as the custom button */
+        .toggle-label {
+            width: 60px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 15px;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            /* The circle inside the toggle button */
+            .toggle-label::after {
+                content: "";
+                width: 26px;
+                height: 26px;
+                background-color: white;
+                border-radius: 50%;
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                transition: transform 0.3s, background-color 0.3s;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+        /* Checked state */
+        input[type="checkbox"]:checked + .toggle-label {
+            background-color: #4caf50;
+        }
+
+            input[type="checkbox"]:checked + .toggle-label::after {
+                transform: translateX(30px);
+                background-color: white;
+            }
+        /* Styling for the message */
+        .status-message {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -377,24 +426,19 @@
                 <p>Remaining: <span id="abc-remaining">426370</span></p>
             </div>
             <div class="abc-buttons">
-                <hr />
-                <p style="text-align:center">Add Money</p>
-                <hr />
-                <button onclick="add(100)">100</button>
-                <button onclick="add(200)">200</button>
-                <button onclick="add(500)">500</button>
-                <button onclick="add(1000)">1000</button>
-                <hr />
-                <p style="text-align:center">Deduct Money</p>
-                <hr />
-                <button onclick="deductABC(10)">10</button>
-                <button onclick="deductABC(20)">20</button>
-                <button onclick="deductABC(30)">30</button>
-                <button onclick="deductABC(50)">50</button>
-                <button onclick="deductABC(100)">100</button>
-                <button onclick="deductABC(200)">200</button>
-                <button onclick="deductABC(500)">500</button>
-                <button onclick="deductABC(1000)">1000</button>
+                <div class="custom-toggle">
+                    <input type="checkbox" id="toggleButton">
+                    <label for="toggleButton" class="toggle-label"></label>
+                </div>
+                <div id="statusMessage" class="status-message">Deduct Money</div>
+                <button onclick="addOrDeduct(10)">10</button>
+                <button onclick="addOrDeduct(20)">20</button>
+                <button onclick="addOrDeduct(30)">30</button>
+                <button onclick="addOrDeduct(50)">50</button>
+                <button onclick="addOrDeduct(100)">100</button>
+                <button onclick="addOrDeduct(200)">200</button>
+                <button onclick="addOrDeduct(500)">500</button>
+                <button onclick="addOrDeduct(1000)">1000</button>
             </div>
         </div>
 
@@ -405,6 +449,20 @@
 
     <script>
         const tasks = ["Medicine", "Fast Food", "Brush", "Tea", "Mrng Walk", "Mrng Water", "Wapp Status", "Bath", "Petrol", "Movie", "Series", "Cold Drink", "मास्टर बेसन"];
+        var isDeduct = true;
+        const statusMessage = document.getElementById('statusMessage');
+
+        document.getElementById('toggleButton').addEventListener('change', function () {
+            if (this.checked) {
+                console.log('Add');
+                isDeduct = false;
+                statusMessage.textContent = 'Add Money';
+            } else {
+                console.log('Deduct');
+                isDeduct = true;
+                statusMessage.textContent = 'Deduct Money';
+            }
+        });
 
         // Initialize the remaining amount for the ABC section
         let abcRemaining = localStorage.getItem("abcRemaining")
@@ -415,21 +473,21 @@
         const abcRemainingDisplay = document.getElementById("abc-remaining");
         abcRemainingDisplay.textContent = abcRemaining;
 
-        // Deduction function for the ABC section
-        function deductABC(amount) {
-            if (abcRemaining - amount >= 0) {
-                abcRemaining -= amount;
+        function addOrDeduct(amount){
+            if (isDeduct) {
+                if (abcRemaining - amount >= 0) {
+                    abcRemaining -= amount;
+                    abcRemainingDisplay.textContent = abcRemaining;
+                    localStorage.setItem("abcRemaining", abcRemaining); // Save to local storage
+                } else {
+                    alert("Insufficient remaining amount!");
+                }
+            }
+            else {
+                abcRemaining += amount;
                 abcRemainingDisplay.textContent = abcRemaining;
                 localStorage.setItem("abcRemaining", abcRemaining); // Save to local storage
-            } else {
-                alert("Insufficient remaining amount!");
             }
-        }
-
-        function add(amount) {
-            abcRemaining += amount;
-            abcRemainingDisplay.textContent = abcRemaining;
-            localStorage.setItem("abcRemaining", abcRemaining); // Save to local storage
         }
 
         function initializePending() {
