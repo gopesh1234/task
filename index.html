@@ -337,7 +337,6 @@
                 background: rgba(255, 255, 255, 0.4);
             }
 
-
     </style>
 </head>
 <body>
@@ -378,6 +377,16 @@
                 <p>Remaining: <span id="abc-remaining">426370</span></p>
             </div>
             <div class="abc-buttons">
+                <hr />
+                <p style="text-align:center">Add Money</p>
+                <hr />
+                <button onclick="add(100)">100</button>
+                <button onclick="add(200)">200</button>
+                <button onclick="add(500)">500</button>
+                <button onclick="add(1000)">1000</button>
+                <hr />
+                <p style="text-align:center">Deduct Money</p>
+                <hr />
                 <button onclick="deductABC(10)">10</button>
                 <button onclick="deductABC(20)">20</button>
                 <button onclick="deductABC(30)">30</button>
@@ -417,6 +426,12 @@
             }
         }
 
+        function add(amount) {
+            abcRemaining += amount;
+            abcRemainingDisplay.textContent = abcRemaining;
+            localStorage.setItem("abcRemaining", abcRemaining); // Save to local storage
+        }
+
         function initializePending() {
             if (!localStorage.getItem("pending")) {
                 localStorage.setItem("pending", JSON.stringify([]));
@@ -435,10 +450,10 @@
                 pendingItem.classList.add('pending-item');
 
                 pendingItem.innerHTML = `
-                                    <strong>${item.text}</strong>
-                                    <span>${item.date}</span>
-                                    <button ondblclick="removePending(${index})" class="remove-pending-btn">x</button>
-                                `;
+                                            <strong>${item.text}</strong>
+                                            <span>${item.date}</span>
+                                            <button ondblclick="removePending(${index})" class="remove-pending-btn">x</button>
+                                        `;
 
                 pendingItem.addEventListener('dblclick', () => {
                     document.getElementById('pending-input').value = item.text;
@@ -598,10 +613,10 @@
 
                 // Add the remove button with the original index
                 commentItem.innerHTML = `
-                                    <strong>${comment.text}</strong>
-                                    <span>${comment.date}</span>
-                                    <button ondblclick="removeComment(${index})" class="remove-comment-btn">x</button>
-                                `;
+                                            <strong>${comment.text}</strong>
+                                            <span>${comment.date}</span>
+                                            <button ondblclick="removeComment(${index})" class="remove-comment-btn">x</button>
+                                        `;
 
                 // Add a click event to fill the input with the clicked comment's text
                 commentItem.addEventListener('dblclick', () => {
