@@ -66,12 +66,12 @@
                 background: #145cb8;
             }
 
-        #tasks-container, #comments-container, #pending-container, #abc-container {
+        #tasks-container, #comments-container, #pending-container, #abc-container, #avg-container {
             display: none;
             flex-direction: column;
         }
 
-            #tasks-container.active, #comments-container.active, #pending-container.active, #abc-container.active {
+            #tasks-container.active, #comments-container.active, #pending-container.active, #abc-container.active, #avg-container.active {
                 display: flex;
             }
 
@@ -386,6 +386,65 @@
             text-align: center;
         }
 
+        .avgg-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 350px;
+            margin-left: 100px;
+            margin-top: 12px;
+            background-color: #1a73e8;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        label {
+            display: block;
+            color: white;
+            font-weight: bold;
+        }
+
+        .inp-cls {
+            width: 60%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .btn-cls {
+            width: 60%;
+            padding: 12px;
+            background-color: white;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            color: black;
+        }
+
+            button:hover {
+                background-color: rgba(40, 167, 69, 1);
+            }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -398,6 +457,7 @@
             <div class="tab" onclick="switchTab('comments')">Comments</div>
             <div class="tab" onclick="switchTab('pending')">Pending</div>
             <div class="tab" onclick="switchTab('money')">₹</div>
+            <div class="tab" onclick="switchTab('avg')">Avg</div>
         </div>
 
         <div id="tasks-container" class="active">
@@ -423,7 +483,7 @@
 
         <div id="abc-container">
             <div class="abc-header">
-                <p>Remaining: <span id="abc-remaining">426370</span></p>
+                <p>Remaining: <span id="abc-remaining">0</span></p>
             </div>
             <div class="abc-buttons">
                 <div class="custom-toggle">
@@ -442,6 +502,31 @@
             </div>
         </div>
 
+        <div id="avg-container">
+            <div class="avgg-container">
+                <h1>Stock Average Calculator</h1>
+                <form id="stockForm" style="margin-left:39px;">
+                    <label for="currentShares">Pehle ka total shares:</label>
+                    <hr /><br />
+                    <input class="inp-cls" type="number" id="currentShares" required>
+                    <label for="currentSharesPri">Pehle ka per share price:</label>
+                    <hr /><br />
+                    <input class="inp-cls" type="number" id="currentSharesPri" required>
+                    <label for="currentPrice">Avi ka share price:</label>
+                    <hr /><br />
+                    <input class="inp-cls" type="number" id="currentPrice" required>
+                    <label for="targetAverage">Kitne tak average le jana hai:</label>
+                    <hr /><br />
+                    <input class="inp-cls" type="number" id="targetAverage" required>
+                    <button class="btn-cls" type="button" onclick="calculateAdditionalShares()">Calculate</button>
+                </form>
+
+                <div id="result">
+                    <!-- The result will be displayed here -->
+                </div>
+            </div>
+        </div>
+
         <div class="clear-section">
             <button onclick="clearStorage()">X</button>
         </div>
@@ -451,6 +536,30 @@
         const tasks = ["Medicine", "Fast Food", "Brush", "Tea", "Mrng Walk", "Mrng Water", "Wapp Status", "Bath", "Petrol", "Movie", "Series", "Cold Drink", "मास्टर बेसन"];
         var isDeduct = true;
         const statusMessage = document.getElementById('statusMessage');
+
+        function calculateAdditionalShares() {
+            const noOfExistingShares = parseFloat(document.getElementById('currentShares').value);
+            const priceofExistingShare = parseFloat(document.getElementById('currentSharesPri').value);
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+            const targetAveragePrice = parseFloat(document.getElementById('targetAverage').value);
+
+            if (isNaN(noOfExistingShares) || isNaN(priceofExistingShare) || isNaN(currentPrice) || isNaN(targetAveragePrice)) {
+                alert("Please enter valid numbers in all fields.");
+                return;
+            }
+
+            // Number of additional shares needed
+            const additionalShares = (noOfExistingShares * (priceofExistingShare - targetAveragePrice)) / (targetAveragePrice - currentPrice);
+
+            console.log(additionalShares);
+
+            const resultDiv = document.getElementById('result');
+            if (additionalShares <= 0) {
+                resultDiv.innerHTML = "The target average price is not achievable by purchasing additional shares.";
+            } else {
+                resultDiv.innerHTML = `${Math.ceil(additionalShares)} additional shares <br> Amount: ${currentPrice * Math.ceil(additionalShares)}`;
+            }
+        }
 
         document.getElementById('toggleButton').addEventListener('change', function () {
             if (this.checked) {
@@ -467,7 +576,7 @@
         // Initialize the remaining amount for the ABC section
         let abcRemaining = localStorage.getItem("abcRemaining")
             ? parseInt(localStorage.getItem("abcRemaining"))
-            : 426370;
+            : 0;
 
         // Display the remaining amount on page load
         const abcRemainingDisplay = document.getElementById("abc-remaining");
@@ -751,7 +860,7 @@
 
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('#tasks-container, #comments-container, #pending-container, #abc-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#tasks-container, #comments-container, #pending-container, #abc-container, #avg-container').forEach(el => el.classList.remove('active'));
 
             if (tab === 'tasks') {
                 document.getElementById('tasks-container').classList.add('active');
@@ -767,6 +876,10 @@
             } else if (tab === 'money') {
                 document.getElementById('abc-container').classList.add('active');
                 document.querySelector('.tab:nth-child(4)').classList.add('active');
+            }
+            else if (tab === 'avg') {
+                document.getElementById('avg-container').classList.add('active');
+                document.querySelector('.tab:nth-child(5)').classList.add('active');
             }
         }
 
