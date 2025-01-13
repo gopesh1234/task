@@ -445,6 +445,40 @@
             text-align: center;
         }
 
+        @@media only screen and (max-width: 768px) {
+
+        .avgg-container {
+            width: 90%; /* Use 90% of the screen width */
+            margin: 20px auto; /* Center on smaller screens */
+            padding: 15px; /* Adjust padding */
+        }
+
+        .avgg-container h1 {
+            font-size: 18px; /* Smaller font size for heading */
+        }
+
+        .inp-cls {
+            width: 100%; /* Full-width inputs */
+            font-size: 14px; /* Adjust font size */
+            padding: 8px; /* Slightly smaller padding */
+        }
+
+        .btn-cls {
+            width: 100%; /* Full-width button */
+            font-size: 14px; /* Adjust font size */
+            padding: 10px; /* Slightly smaller padding */
+        }
+
+        #result {
+            font-size: 16px; /* Slightly smaller text size */
+            padding: 10px;
+        }
+
+        form {
+            margin-left: 0; /* Remove left margin */
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -455,7 +489,7 @@
         <div class="tabs">
             <div class="tab active" onclick="switchTab('tasks')">Tasks</div>
             <div class="tab" onclick="switchTab('comments')">Comments</div>
-            <div class="tab" onclick="switchTab('pending')">Pending</div>
+            <div class="tab" onclick="switchTab('pending')">!</div>
             <div class="tab" onclick="switchTab('money')">₹</div>
             <div class="tab" onclick="switchTab('avg')">Avg</div>
         </div>
